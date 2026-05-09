@@ -13,7 +13,7 @@ public:
     string name;
     int balance;
 
-    void getter() { cout << name << "\n"; }
+    string getter() { return name; }
 };
 
 int main()
@@ -28,28 +28,33 @@ int main()
 
         if (cmd == "help")
         {
-            //WORKING ON NEW AND PRINT
+            // WORKING ON NEW AND PRINT
             cout << "new   TO CREAT NEW ACCOUNT";
             cout << "print   TO PRINT BALANCE OF ACCOUNT";
             cout << "exit   TO EXIT";
-            
         }
 
-
         // still wworking on it
-        // if (cmd == "new")
-        // {
-        //     string n;
-        //     cout << "name: ";
-        //     cin >> n;
-        //     accounts.push_back(Person(n));
-        // }
+        if (cmd == "new")
+        {
+            string n;
+            cout << "name: ";
+            cin >> n;
+            accounts.push_back(Person(n));
 
-        // if (cmd == "print")
-        // {
-        //     for (auto &p : accounts)
-        //         p.getter();
-        // }
+            ofstream file("data.txt"); 
+            for (auto &p : accounts)
+                file << p.getter() << "\n";
+            file.close();
+        }
+        if (cmd == "print")
+        {
+
+            for (auto &p : accounts)
+            {
+                p.getter();
+            }
+        }
 
     } while (cmd != "exit");
 }
