@@ -28,10 +28,13 @@ int main()
         if (cmd == "help")
         {
 
-            cout << "newacc  TO CREAT NEW ACCOUNT";                            //  going to use getline funtion incomplet
-            cout << "print   TO PRINT BALANCE OF ACCOUNT";                     // working
-            cout << "edit   TO edit account which will be created by new acc"; // not created have too
-            cout << "exit   TO EXIT";
+            cout<<"\n"<<"============================================================="<<endl;
+            cout << "newacc -> TO CREAT NEW ACCOUNT"<<endl;                            //  going to use getline funtion incomplet
+            cout << "print  -> TO PRINT BALANCE OF ACCOUNT"<<endl;                     // working
+            cout << "edit   -> TO edit account which will be created by new acc"<<endl; // not created have too
+            cout << "exit   -> TO EXIT"<<endl;
+            cout<<"============================================================="<<endl;
+            cout<<"\n";
         }
 
         // still wworking on it
