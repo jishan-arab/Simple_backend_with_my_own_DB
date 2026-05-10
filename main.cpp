@@ -8,12 +8,11 @@ using namespace std;
 class Person
 {
 public:
-    Person(string n) : name(n), balance(0) {}
+    Person(string n, string g) : balance(0), name(n), gender(g) {}
 
     string name;
+    string gender;
     int balance;
-
-    string getter() { return name; }
 };
 
 int main()
@@ -28,32 +27,29 @@ int main()
 
         if (cmd == "help")
         {
-            // WORKING ON NEW AND PRINT
-            cout << "new   TO CREAT NEW ACCOUNT";
-            cout << "print   TO PRINT BALANCE OF ACCOUNT";
+
+            cout << "newacc  TO CREAT NEW ACCOUNT";                            //  going to use getline funtion incomplet
+            cout << "print   TO PRINT BALANCE OF ACCOUNT";                     // working
+            cout << "edit   TO edit account which will be created by new acc"; // not created have too
             cout << "exit   TO EXIT";
         }
 
         // still wworking on it
         if (cmd == "new")
         {
-            string n;
+            string n, g;
             cout << "name: ";
             cin >> n;
-            accounts.push_back(Person(n));
+            cout << "mail(m) or femail(f): ";
+            cin >> g;
 
-            ofstream file("data.txt"); 
-            for (auto &p : accounts)
-                file << p.getter() << "\n";
-            file.close();
+            accounts.push_back(Person(n, g));
+
+            ofstream out("data.txt", ios::app);
+            out << "name = " << n << "\n" << "gender = " << g << '\n';
         }
         if (cmd == "print")
         {
-
-            for (auto &p : accounts)
-            {
-                p.getter();
-            }
         }
 
     } while (cmd != "exit");
