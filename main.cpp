@@ -7,6 +7,7 @@
 #include <string>
 #include <cstring>
 #include <fstream>
+#include <vector>
 
 using namespace std;
 
@@ -18,15 +19,23 @@ public:
     int age;
     char gender[10];
 
-    private:
+    bool haveCard = false;
+    bool appliedCard = false;
+    bool cancleCard = false;
+
+private:
     double balance;
 };
 
 int main()
 {
+    int recodPos = 0;
+    person login;
+    person p;
+
     char cmd[50];
     bool loginsucc = false;
-    bool exit = false;
+    bool anyupdate = 0, exit = false;
     do
     {
 
@@ -34,14 +43,16 @@ int main()
         cout << "login or signup: ";
         cin.getline(meow, 50);
 
+        
         if (strcmp(meow, "login") == 0)
         {
-            cout << "working on it " << '\n';
+            
 
             person p;
             char find[50];
             char passowrdFind[50];
             bool found = false;
+            bool nameFound = false;
 
             cout << "name: ";
             cin.getline(find, 50);
@@ -49,28 +60,39 @@ int main()
             cout << "password: ";
             cin.getline(passowrdFind, 50);
 
+            recodPos = 0; 
+
             ifstream in("data.bin", ios::binary);
             while (in.read((char *)&p, sizeof(p)))
             {
-                if ((strcmp(p.name, find) == 0) && (strcmp(p.password, passowrdFind) == 0))
+                if (strcmp(p.name, find) == 0)
                 {
-                    found = true;
-                    loginsucc = true;
-                    cout << "login as " << find << '\n';
-                    cout << "WE WELCOME YOU" << '\n';
-                    break;
+                    nameFound = true;
+                    if (strcmp(p.password, passowrdFind) == 0)
+                    {
+                        login = p;
+                        found = true;
+                        loginsucc = true;
+                        cout << "\n*****************\n\n";
+                        cout << "LOGIN AS " << find << "\n\n";
+                        cout << "WE WELCOME YOU\n\n";
+                        cout << "*****************\n\n";
+                        break;
+                    }
                 }
-
-                else if (!(strcmp(p.name, find) == 0))
-                {
-                    cout << "invalid username" << '\n';
-                }
-                else if (!(strcmp(p.password, passowrdFind) == 0))
-                {
-                    cout << "invalid password" << '\n';
-                }
+                if (!found)
+                    recodPos++;
             }
             in.close();
+
+            if (!found)
+            {
+                recodPos = 0;
+                if (!nameFound)
+                    cout << "invalid username\n";
+                else
+                    cout << "invalid password\n";
+            }
         }
 
         else if (strcmp(meow, "signup") == 0)
@@ -78,7 +100,6 @@ int main()
 
             cout << "==creating new account==" << '\n';
             person p;
-           
 
             // name
             bool valid = 0;
@@ -167,6 +188,10 @@ int main()
             ofstream out("data.bin", ios::binary | ios::app);
             out.write((char *)&p, sizeof(p));
             out.close();
+
+            ofstream outtxt("data.txt", ios::app);
+            outtxt.write((char *)&p, sizeof(p));
+            outtxt.close();
             cout << "==account created==" << '\n';
         }
 
@@ -203,12 +228,68 @@ int main()
             cout << "\n";
         }
 
+        // EDIT
+
+        if (strcmp(cmd, "edit") == 0)
+        {
+            char tempEdit[20];
+            char newName[50];
+            cout << "\n";
+            cout << "================================" << "\n";
+            cout << "what you want to edit" << '\n'
+                 << "\n";
+            cout << "name " << '\n';
+            cout << "gender " << '\n'
+                 << "\n";
+            cout << "edit: ";
+            cin.getline(tempEdit, 20);
+
+            // search
+
+            if (strcmp(tempEdit, "name") == 0)
+            {
+                bool valid = 1;
+                do
+                {
+                    valid = 1;
+                    cout << "new name: ";
+                    cin.getline(newName, 50);
+
+                    ifstream in("data.bin", ios::binary);
+                    while (in.read((char *)&p, sizeof(p)))
+                    {
+                        if (strcmp(p.name, newName) == 0)
+                        {
+                            valid = 0;
+                            break;
+                        }
+                    }
+
+                    in.close();
+                    if (valid == 0)
+                    {
+                        cout << "name taken pussy take diffrint name" << "\n";
+                    }
+
+                } while (valid == 0);
+
+                strcpy(login.name, newName);
+
+                cout << "\n"
+                     << "name update to" << login.name << "\n";
+            }
+
+            anyupdate = 1;
+
+            cout << "================================";
+        }
+
         // if user is admin then
         if (0)
         {
             if (strcmp(cmd, "scr acc") == 0)
             {
-                person p;
+
                 char search[50];
                 bool found = false;
 
@@ -225,7 +306,7 @@ int main()
                         cout << "Name: " << p.name << '\n';
                         cout << "age: " << p.age << '\n';
                         cout << "Gender: " << p.gender << '\n';
-                        //balance will do something
+                        // balance will do something
                         cout << "==========================" << '\n';
                         found = true;
                         break;
@@ -240,6 +321,34 @@ int main()
                     cout << "==========================" << '\n';
                 }
             }
+        }
+
+        if (anyupdate)
+        {
+            vector<person> all;
+            person temp;
+
+            ifstream update("data.bin", ios::binary);
+            while (update.read((char *)&temp, sizeof(temp)))
+            {
+                all.push_back(temp);
+            }
+            update.close();
+
+            all[recodPos] = login;
+
+            ofstream out("data.bin", ios::binary);
+            for (person &P : all)
+            {
+                out.write((char *)&P, sizeof(p));
+            }
+            out.close();
+            anyupdate = 0;
+            cout << '\n'
+                 << "=========";
+            cout << "updated";
+            cout << "=========" << "\n"
+                 << "\n";
         }
 
     } while (strcmp(cmd, "exit") != 0);
