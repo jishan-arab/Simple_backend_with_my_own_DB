@@ -1,5 +1,5 @@
-// check for dulicate user acc with same name user with same name alrady exist
-
+// done with check for dulpicate name in signup and edit
+// remaining to make an .txt file for simple human readable record unsensitive info;
 // will change scr account inside admin pravilage
 // admin account are not done yet
 
@@ -33,20 +33,20 @@ int main()
     person login;
     person p;
 
-    char cmd[50];
+    char $[50];
     bool loginsucc = false;
     bool anyupdate = 0, exit = false;
     do
     {
 
+        // login or signup {43-204};
         char meow[50];
         cout << "login or signup: ";
         cin.getline(meow, 50);
 
-        
+        // login {48-96};
         if (strcmp(meow, "login") == 0)
         {
-            
 
             person p;
             char find[50];
@@ -60,7 +60,7 @@ int main()
             cout << "password: ";
             cin.getline(passowrdFind, 50);
 
-            recodPos = 0; 
+            recodPos = 0;
 
             ifstream in("data.bin", ios::binary);
             while (in.read((char *)&p, sizeof(p)))
@@ -95,6 +95,7 @@ int main()
             }
         }
 
+        // signup {99-197};
         else if (strcmp(meow, "signup") == 0)
         {
 
@@ -135,7 +136,7 @@ int main()
                     {
                         if (strcmp(p.name, find) == 0)
                         {
-                            // when found match
+
                             valid = false;
                             forerror = true;
                         }
@@ -189,9 +190,6 @@ int main()
             out.write((char *)&p, sizeof(p));
             out.close();
 
-            ofstream outtxt("data.txt", ios::app);
-            outtxt.write((char *)&p, sizeof(p));
-            outtxt.close();
             cout << "==account created==" << '\n';
         }
 
@@ -204,6 +202,7 @@ int main()
 
     } while (loginsucc == false);
 
+    // main home loop {206-353};
     do
     {
         if (exit == true)
@@ -212,10 +211,10 @@ int main()
             break;
         }
 
-        cout << "cmd: ";
-        cin.getline(cmd, 50);
+        cout << "$: ";
+        cin.getline($, 50);
 
-        if (strcmp(cmd, "help") == 0)
+        if (strcmp($, "help") == 0)
         {
 
             cout << "\n";
@@ -230,7 +229,7 @@ int main()
 
         // EDIT
 
-        if (strcmp(cmd, "edit") == 0)
+        if (strcmp($, "edit") == 0)
         {
             char tempEdit[20];
             char newName[50];
@@ -287,7 +286,7 @@ int main()
         // if user is admin then
         if (0)
         {
-            if (strcmp(cmd, "scr acc") == 0)
+            if (strcmp($, "scr acc") == 0)
             {
 
                 char search[50];
@@ -351,7 +350,7 @@ int main()
                  << "\n";
         }
 
-    } while (strcmp(cmd, "exit") != 0);
+    } while (strcmp($, "exit") != 0);
 
     cout << "=========================" << '\n';
     cout << "meow meow sassion closed" << '\n';
