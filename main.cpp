@@ -1,7 +1,10 @@
-// done with check for dulpicate name in signup and edit
-// remaining to make an .txt file for simple human readable record unsensitive info;
-// will change scr account inside admin pravilage
-// admin account are not done yet
+
+//remaining
+//name:meow meow |age:12|gender:m|isAdmin:0  have to remove any white space after name 156
+
+//.txt file for simple human readable record unsensitive info;
+//andupdate.txt after change in .bin file;
+//what can admin; 
 
 #include <iostream>
 #include <string>
@@ -14,17 +17,12 @@ using namespace std;
 class person
 {
 public:
+    bool isadmin = 0;
     char name[50];
     char password[50];
     int age;
     char gender[10];
 
-    bool haveCard = false;
-    bool appliedCard = false;
-    bool cancleCard = false;
-
-private:
-    double balance;
 };
 
 int main()
@@ -73,10 +71,10 @@ int main()
                         login = p;
                         found = true;
                         loginsucc = true;
-                        cout << "\n*****************\n\n";
-                        cout << "LOGIN AS " << find << "\n\n";
-                        cout << "WE WELCOME YOU\n\n";
-                        cout << "*****************\n\n";
+                        cout << "\n----------------\n";
+                        cout << "LOGIN AS " << find << "\n";
+                        cout << "WE WELCOME YOU\n";
+                        cout << "----------------\n";
                         break;
                     }
                 }
@@ -155,7 +153,7 @@ int main()
             cout << "passwword: ";
             cin.getline(p.password, 50);
 
-            // password slating and haching remaning
+           
 
             // age
             do
@@ -190,7 +188,13 @@ int main()
             out.write((char *)&p, sizeof(p));
             out.close();
 
-            cout << "==account created==" << '\n';
+            ofstream outt("data.txt", ios::app);
+            outt << "\nname:" << p.name << "|" << "age:" << p.age << "|" << "gender:" << p.gender << '|'<<"isAdmin:"<<login.isadmin;
+
+            outt.close();
+
+            cout
+                << "==account created==" << '\n';
         }
 
         if (strcmp(meow, "exit") == 0)
@@ -205,6 +209,52 @@ int main()
     // main home loop {206-353};
     do
     {
+        if (login.isadmin)
+        {
+            do
+            {
+                cout << "-------------" << "\n";
+                cout << "ADMIN ACCOUNT" << "\n";
+                cout << "-------------" << "\n";
+
+            } while (0);
+
+            if (strcmp($, "scr acc") == 0)
+            {
+
+                char search[50];
+                bool found = false;
+
+                cout << "enter name: ";
+
+                cin.getline(search, 50);
+
+                ifstream in("data.bin", ios::binary);
+                while (in.read((char *)&p, sizeof(p)))
+                {
+                    if (strcmp(p.name, search) == 0)
+                    {
+                        cout << "==========================" << '\n';
+                        cout << "Name: " << p.name << '\n';
+                        cout << "age: " << p.age << '\n';
+                        cout << "Gender: " << p.gender << '\n';
+                        // balance will do something
+                        cout << "==========================" << '\n';
+                        found = true;
+                        break;
+                    }
+                }
+                in.close();
+
+                if (!found)
+                {
+                    cout << "==========================" << '\n';
+                    cout << "no record found" << '\n';
+                    cout << "==========================" << '\n';
+                }
+            }
+        }
+
         if (exit == true)
         {
 
@@ -250,21 +300,38 @@ int main()
                 bool valid = 1;
                 do
                 {
-                    valid = 1;
+
+                    valid = 0;
                     cout << "new name: ";
                     cin.getline(newName, 50);
 
-                    ifstream in("data.bin", ios::binary);
-                    while (in.read((char *)&p, sizeof(p)))
+                    for (int i = 0; newName[i] != '\0'; i++)
                     {
-                        if (strcmp(p.name, newName) == 0)
+                        if (newName[i] != ' ')
                         {
-                            valid = 0;
+                            valid = 1;
                             break;
                         }
                     }
+                    if (valid==0)
+                    {
+                        cout <<" not a valid input";
+                    }
 
-                    in.close();
+                    if (valid)
+                    {
+                        ifstream in("data.bin", ios::binary);
+                        while (in.read((char *)&p, sizeof(p)))
+                        {
+                            if (strcmp(p.name, newName) == 0)
+                            {
+                                valid = 0;
+                                break;
+                            }
+                        }in.close();
+                    }
+
+                    
                     if (valid == 0)
                     {
                         cout << "name taken pussy take diffrint name" << "\n";
@@ -272,54 +339,17 @@ int main()
 
                 } while (valid == 0);
 
-                strcpy(login.name, newName);
-
-                cout << "\n"
-                     << "name update to" << login.name << "\n";
-            }
-
-            anyupdate = 1;
-
-            cout << "================================";
-        }
-
-        // if user is admin then
-        if (0)
-        {
-            if (strcmp($, "scr acc") == 0)
-            {
-
-                char search[50];
-                bool found = false;
-
-                cout << "enter name: ";
-
-                cin.getline(search, 50);
-
-                ifstream in("data.bin", ios::binary);
-                while (in.read((char *)&p, sizeof(p)))
+                if (valid)
                 {
-                    if (strcmp(p.name, search) == 0)
-                    {
-                        cout << "==========================" << '\n';
-                        cout << "Name: " << p.name << '\n';
-                        cout << "age: " << p.age << '\n';
-                        cout << "Gender: " << p.gender << '\n';
-                        // balance will do something
-                        cout << "==========================" << '\n';
-                        found = true;
-                        break;
-                    }
-                }
-                in.close();
+                    strcpy(login.name, newName);
+                    cout << "\n"
+                         << "name update to " << login.name << "\n";
 
-                if (!found)
-                {
-                    cout << "==========================" << '\n';
-                    cout << "no record found" << '\n';
-                    cout << "==========================" << '\n';
+                    anyupdate = 1;
                 }
             }
+
+            cout << "============================";
         }
 
         if (anyupdate)
