@@ -1,4 +1,4 @@
-//run this file to  convert {simple user} to an {admin user} 
+// run this file to  convert {simple user} to an {admin user}
 #include <iostream>
 #include <cstring>
 #include <fstream>
@@ -14,7 +14,6 @@ public:
     char password[50];
     int age;
     char gender[10];
-
 };
 
 int main()
@@ -32,7 +31,6 @@ int main()
     cout << "ADVICE TO USE CAREFULLY!!!\n";
     cout << "-------------------------------\n\n";
     cout << "want to give(give)  or  want to remove(remove): " << "\n";
-   
 
     char ADMIN[50];
     do
@@ -94,6 +92,53 @@ int main()
         }
         else if (strcmp(ADMIN, "remove") == 0)
         {
+            char srname[50];
+
+            recodPos = 0;
+            all.clear();
+            found = false;
+
+            cout << "name: ";
+            cin.getline(srname, 50);
+            skip = 1;
+            ifstream in("data.bin", ios::binary);
+            while (in.read((char *)&p, sizeof(p)))
+            {
+                if (strcmp(p.name, srname) == 0)
+                {
+                    skip = 0;
+                    break;
+                }
+                recodPos++;
+            }
+            in.close();
+
+            if (!skip)
+            {
+                ifstream store("data.bin", ios::binary);
+                while (store.read((char *)&temp, sizeof(temp)))
+                {
+                    all.push_back(temp);
+                }
+                store.close();
+
+                p.isadmin = 0;
+
+                all[recodPos] = p;
+
+                ofstream out("data.bin", ios::binary);
+                for (person &P : all)
+                {
+                    out.write((char *)&P, sizeof(p));
+                }
+                out.close();
+
+                cout << "admin remove " << p.name << "\n";
+            }
+            else
+            {
+                cout << "user not found\n";
+            }
         }
         else if (!skip)
         {
