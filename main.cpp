@@ -1,10 +1,10 @@
 
-//remaining
-//name:meow meow |age:12|gender:m|isAdmin:0  have to remove any white space after name 156
+// remaining
+// name:meow meow |age:12|gender:m|isAdmin:0  have to remove any white space after name 156
 
 //.txt file for simple human readable record unsensitive info;
-//andupdate.txt after change in .bin file;
-//what can admin; 
+// andupdate.txt after change in .bin file;
+// what can admin;
 
 #include <iostream>
 #include <string>
@@ -22,7 +22,6 @@ public:
     char password[50];
     int age;
     char gender[10];
-
 };
 
 int main()
@@ -153,8 +152,6 @@ int main()
             cout << "passwword: ";
             cin.getline(p.password, 50);
 
-           
-
             // age
             do
             {
@@ -189,12 +186,16 @@ int main()
             out.close();
 
             ofstream outt("data.txt", ios::app);
-            outt << "\nname:" << p.name << "|" << "age:" << p.age << "|" << "gender:" << p.gender << '|'<<"isAdmin:"<<login.isadmin;
+            outt << "\nname:" << p.name << "|" << "age:" << p.age << "|" << "gender:" << p.gender << '|' << "isAdmin:" << login.isadmin;
 
             outt.close();
 
             cout
                 << "==account created==" << '\n';
+        }
+        else
+        {
+            cout << "only login and signup\n";
         }
 
         if (strcmp(meow, "exit") == 0)
@@ -206,18 +207,20 @@ int main()
 
     } while (loginsucc == false);
 
+    bool done = false;
     // main home loop {206-353};
     do
     {
         if (login.isadmin)
         {
-            do
+            
+            while (!done)
             {
                 cout << "-------------" << "\n";
                 cout << "ADMIN ACCOUNT" << "\n";
                 cout << "-------------" << "\n";
-
-            } while (0);
+                done = 1;
+            }
 
             if (strcmp($, "scr acc") == 0)
             {
@@ -266,20 +269,28 @@ int main()
 
         if (strcmp($, "help") == 0)
         {
-
+           if(login.isadmin){
             cout << "\n";
             cout << "=============================================================" << '\n';
-            cout << "newacc -> TO CREAT NEW ACCOUNT" << '\n';                         // changer to using signup
             cout << "scr acc  -> TO PRINT  ACCOUNT detiles" << '\n';                  // working
             cout << "edit   -> TO edit account which was created by new acc" << '\n'; // not created have too
             cout << "exit   -> TO EXIT" << '\n';
             cout << "=============================================================" << '\n';
             cout << "\n";
+           }
+           else{
+            cout << "\n";
+            cout << "=============================================================" << '\n';
+            cout << "edit   -> TO edit account which was created by new acc" << '\n'; // not created have too
+            cout << "exit   -> TO EXIT" << '\n';
+            cout << "=============================================================" << '\n';
+            cout << "\n";
+           }
         }
 
         // EDIT
 
-        if (strcmp($, "edit") == 0)
+        else if (strcmp($, "edit") == 0)
         {
             char tempEdit[20];
             char newName[50];
@@ -313,9 +324,9 @@ int main()
                             break;
                         }
                     }
-                    if (valid==0)
+                    if (valid == 0)
                     {
-                        cout <<" not a valid input";
+                        cout << " not a valid input";
                     }
 
                     if (valid)
@@ -328,10 +339,10 @@ int main()
                                 valid = 0;
                                 break;
                             }
-                        }in.close();
+                        }
+                        in.close();
                     }
 
-                    
                     if (valid == 0)
                     {
                         cout << "name taken pussy take diffrint name" << "\n";
@@ -350,6 +361,10 @@ int main()
             }
 
             cout << "============================";
+        }
+        else
+        {
+            cout << "commnt don't fount try help\n";
         }
 
         if (anyupdate)

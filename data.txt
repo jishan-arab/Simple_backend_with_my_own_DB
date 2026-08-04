@@ -1,4 +1,2 @@
 
-name:meow|age:1|gender:m|isAdmin:0
-name:the meow|age:1|gender:m|isAdmin:0
-name:meow 2|age:12|gender:m|isAdmin:0
+name:meow|age:5|gender:m|isAdmin:0

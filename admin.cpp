@@ -54,7 +54,7 @@ int main()
             ifstream in("data.bin", ios::binary);
             while (in.read((char *)&p, sizeof(p)))
             {
-                if (strcmp(p.name, srname) == 0)
+                if (strcmp(p.name, srname ) == 0)
                 {
                     skip = 0;
                     break;
